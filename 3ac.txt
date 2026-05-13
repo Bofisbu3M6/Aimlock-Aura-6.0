@@ -1,0 +1,193 @@
+{
+  "GameConfig": {
+    "Version": "6.0.0",
+    "Metadata": {
+      "GameId": "GAME_002",
+      "Platform": "iOS",
+      "Hardware": "iPhone"
+    },
+    "Components": {
+      "Character": {
+        "ItemId": "CHAR_002",
+        "GroupId": "Player",
+        "Attributes": {
+          "Movement": {
+            "BaseWalkSpeed": 5.5,
+            "BaseRunSpeed": 7.8,
+            "RushSpeed": 10.0,
+            "MaxJumpHeight": 2.2,
+            "RushTime": 15.0,
+            "DamageReduce": 0.01,
+            "Modifiers": [
+              { "Condition": "EnergyBelow200", "SpeedMultiplier": 2.0 },
+              { "Condition": "Running", "JumpHeightBonus": 2.0 }
+            ]
+          },
+          "Energy": {
+            "MaxEnergy": 200.0,
+            "EnergyRecovery": 0.5,
+            "JumpConsume": 0.0,
+            "RushConsume": 0.0,
+            "DynamicRegen": [
+              { "State": "Idle", "RegenRate": 0.1 },
+              { "State": "Running", "RegenRate": 0.1 }
+            ]
+          },
+          "States": [
+            { "StateId": "Idle", "Animation": "Anim_Idle", "SoundResID": "Sound_Idle", "TransitionTo": ["Running", "Jumping"] },
+            { "StateId": "Running", "Animation": "Anim_Run", "SoundResID": "Sound_Run", "TransitionTo": ["Idle", "Jumping"] },
+            { "StateId": "Jumping", "Animation": "Anim_Jump", "SoundResID": "Sound_Jump", "TransitionTo": ["Idle"] }
+          ],
+          "CrossReferences": {
+            "WeaponSystem": "WPN_001",
+            "ControlSystem": "CTRL_002"
+          }
+        }
+      },
+      "TouchControl": {
+        "ItemId": "CTRL_002",
+        "GroupId": "Controls",
+        "Settings": {
+          "Aiming": {
+            "TouchSensitivityX": 1.0,
+            "TouchSensitivityY": 1.0,
+            "AimSmoothing": 0.98,
+            "AimLock": 10.0,
+            "TargetHeadLockTime": 15.0,
+            "TargetHeadLockStrength": 10.0,
+            "TargetHeadLockPower": 10.0,
+            "MaxRotationSpeed": 150.0,
+            "DynamicSensitivity": [
+              { "InputSpeed": 0.0, "SensitivityMultiplier": 1.0 },
+              { "InputSpeed": 80.0, "SensitivityMultiplier": 2.0 }
+            ]
+          },
+          "Input": {
+            "ButtonResponseTime": 0.001,
+            "JoystickDeadZone": 0.01,
+            "TouchThreshold": 0.1,
+            "MultiTouchSupport": true
+          },
+          "Feedback": {
+            "HapticIntensity": 0.0,
+            "VisualEffect": "Effect_Aim_01"
+          }
+        },
+        "Calibration": {
+          "AutoAdjustSensitivity": true,
+          "SensitivityCurve": [
+            { "InputDelta": 0.0, "SensitivityMultiplier": 1.0 },
+            { "InputDelta": 40.0, "SensitivityMultiplier": 1.5 },
+            { "InputDelta": 80.0, "SensitivityMultiplier": 2.0 }
+          ]
+        }
+      },
+      "UIControls": [
+        {
+          "ItemId": "BTN_FIRE_002",
+          "GroupId": "UI",
+          "ButtonName": "FireButton",
+          "SkillID": "SKILL_FIRE_02",
+          "Properties": {
+            "CDTime": 0.001,
+            "EnergyCost": 0.0,
+            "UseEffect": "Effect_Fire_02",
+            "SoundResID": "Sound_Fire_Click_02"
+          },
+          "Conditions": {
+            "MinEnergy": 0.0,
+            "RequiredState": "Idle",
+            "RequiredWeapon": "WPN_001"
+          },
+          "Modifiers": [
+            { "Condition": "LowEnergy", "CDTimeMultiplier": 0.95 }
+          ]
+        },
+        {
+          "ItemId": "BTN_MOVE_002",
+          "GroupId": "UI",
+          "ButtonName": "MoveJoystick",
+          "SkillID": "SKILL_MOVE_02",
+          "Properties": {
+            "CDTime": 0.0,
+            "EnergyCost": 0.0,
+            "UseEffect": "Effect_Move_02",
+            "SoundResID": "Sound_Joystick_Drag_02"
+          },
+          "Conditions": {
+            "MinEnergy": 0.0,
+            "RequiredState": "Any"
+          }
+        },
+        {
+          "ItemId": "BTN_RUSH",
+          "GroupId": "UI",
+          "ButtonName": "RushButton",
+          "SkillID": "SKILL_RUSH_01",
+          "Properties": {
+            "CDTime": 0.01,
+            "EnergyCost": 0.0,
+            "UseEffect": "Effect_Rush_01",
+            "SoundResID": "Sound_Rush_01"
+          },
+          "Conditions": {
+            "MinEnergy": 0.0,
+            "RequiredState": "Running"
+          }
+        }
+      ],
+      "WeaponSystem": {
+        "ItemId": "WPN_001",
+        "GroupId": "PrimaryWeapon",
+        "Attributes": {
+          "Damage": 50.0,
+          "FireRate": 2.0,
+          "Recoil": 0.0,
+          "AimAssist": {
+            "AssistStrength": 15.0,
+            "MaxDistance": 50.0
+          }
+        },
+        "CrossReferences": {
+          "Character": "CHAR_002",
+          "FireButton": "BTN_FIRE_002"
+        }
+      }
+    },
+    "ErrorHandling": {
+      "ValidateParams": true,
+      "NullCheck": ["ItemId", "ButtonName", "SkillID", "GroupId", "RequiredState", "RequiredWeapon"],
+      "ParamConstraints": {
+        "MinValues": {
+          "BaseWalkSpeed": 1.0,
+          "TouchSensitivityX": 1.0,
+          "AimSmoothing": 0.1,
+          "Damage": 50.0
+        },
+        "MaxValues": {
+          "BaseWalkSpeed": 5.6,
+          "TouchSensitivityX": 1.0,
+          "AimSmoothing": 1.0,
+          "Damage": 800.0
+        }
+      },
+      "LogErrors": [
+        { "ErrorCode": "PARAMS_ERROR", "Message": "UGCMeta params error, expects {0} params, data: {1}", "Severity": "Error" },
+        { "ErrorCode": "NULL_REF", "Message": "{0} is null", "Severity": "Warning" },
+        { "ErrorCode": "INVALID_STATE", "Message": "Invalid state transition to {0}", "Severity": "Error" },
+        { "ErrorCode": "RESOURCE_NOT_FOUND", "Message": "Resource {0} not found", "Severity": "Error" }
+      ]
+    },
+    "DynamicRules": {
+      "StateTransitions": {
+        "Idle": ["Running", "Jumping"],
+        "Running": ["Idle", "Jumping"],
+        "Jumping": ["Idle"]
+      },
+      "EnergyModifiers": [
+        { "Condition": "LowEnergy", "Threshold": 1.0, "SpeedPenalty": 0.0 },
+        { "Condition": "HighEnergy", "Threshold": 200.0, "AimBonus": 10.0 }
+      ]
+    }
+  }
+}
