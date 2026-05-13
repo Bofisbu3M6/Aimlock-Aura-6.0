@@ -1,0 +1,103 @@
+"WalkSpeed": 5.6,
+        "BaseRunSpeed": 7.8,
+        "RushSpeed": 10.0,
+        "MaxJumpHeight": 2.2,
+        "RushTime": 15.0,
+        "DamageReduce": 0.01,
+        "Modifiers": [
+          { "Condition": "EnergyBelow200", "SpeedMultiplier": 2.0 },
+          { "Condition": "Running", "JumpHeightBonus": 2.0 }
+        ]
+      },
+      "Energy": {
+        "MaxEnergy": 200.0,
+        "EnergyRecovery": 0.5,
+        "JumpConsume": 0.0,
+        "RushConsume": 0.0,
+        "DynamicRegen": [
+          { "State": "Idle", "RegenRate": 0.1 },
+          { "State": "Running", "RegenRate": 0.1 }
+        ]
+      },
+      "States": [
+        { "StateId": "Idle", "Animation": "Anim_Idle", "SoundResID": "Sound_Idle", "TransitionTo": ["Running", "Jumping"] },
+        { "StateId": "Running", "Animation": "Anim_Run", "SoundResID": "Sound_Run", "TransitionTo": ["Idle", "Jumping"] },
+        { "StateId": "Jumping", "Animation": "Anim_Jump", "SoundResID": "Sound_Jump", "TransitionTo": ["Idle"] }
+      ],
+      "CrossReferences": {
+        "WeaponSystem": "WPN_001",
+        "ControlSystem": "CTRL_002"
+      }
+    },
+    "TouchControl": {
+      "ItemId": "CTRL_002",
+      "Settings": {
+        "Aiming": {
+          "TouchSensitivityX": 1.0,
+            "TouchSensitivityY": 1.0,
+            "AimSmoothing": 0.98,
+            "AimLock": 10.0,
+            "TargetHeadLockTime": 15.0,
+            "TargetHeadLockStrength": 10.0,
+            "TargetHeadLockPower": 10.0,
+            "MaxRotationSpeed": 150.0,
+          "DynamicSensitivity": [
+            { "InputSpeed": 0.0, "SensitivityMultiplier": 1.0 },
+            { "InputSpeed": 80.0, "SensitivityMultiplier": 2.0 }
+          ]
+        },
+        "Input": {
+          "ButtonResponseTime": 0.001,
+          "JoystickDeadZone": 0.01,
+          "TouchThreshold": 0.1,
+          "MultiTouchSupport": true
+        },
+        "Feedback": {
+          "HapticIntensity": 0.0,
+          "VisualEffect": "Effect_Aim_02"
+        }
+      },
+      "Calibration": {
+        "AutoAdjustSensitivity": true,
+        "SensitivityCurve": [
+          { "InputDelta": 0.0, "SensitivityMultiplier": 1.5 },
+          { "InputDelta": 40.0, "SensitivityMultiplier": 1.5 },
+          { "InputDelta": 80.0, "SensitivityMultiplier": 2.0 }
+        ]
+      }
+    },
+    "UIControls": [
+      {
+        "ItemId": "BTN_FIRE_002",
+        "ButtonName": "FireButton",
+        "SkillID": "SKILL_FIRE_02",
+        "Properties": {
+          "CDTime": 0.001,
+          "EnergyCost": 0.0,
+          "UseEffect": "Effect_Fire_02",
+          "SoundResID": "Sound_Fire_Click_02"
+        },
+        "Conditions": {
+          "MinEnergy": 0.0,
+          "RequiredState": "Idle",
+          "RequiredWeapon": "WPN_001"
+        },
+        "Modifiers": [
+          { "Condition": "LowEnergy", "CDTimeMultiplier": 0.95 }
+        ]
+      },
+      {
+        "ItemId": "BTN_MOVE_002",
+        "ButtonName": "MoveJoystick",
+        "SkillID": "SKILL_MOVE_02",
+        "Properties": {
+          "CDTime": 0.0,
+          "EnergyCost": 0.0,
+          "UseEffect": "Effect_Move_02",
+          "SoundResID": "Sound_Joystick_Drag_02"
+        },
+        "Conditions": {
+          "MinEnergy": 0.0,
+          "RequiredState": null
+        }
+      }
